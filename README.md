@@ -1,8 +1,5 @@
 # library-database
-روژه پایگاه داده
-موضوع: پایگاه اطلاعات یک کتابخانه
-تهیه شده توسط: انیس نبی پور آزاده
-ش.دانشجویی 1400442144
+database project: library database
 
 مدل E-R :
 https://imgur.com/a/YSzg6JU
