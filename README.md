@@ -1,5 +1,4 @@
 # library-database
-database project: library database
 
 مدل E-R :
 https://imgur.com/a/YSzg6JU
@@ -18,20 +17,31 @@ area(name, librarian, start-shelf, end-shelf)
 borrows(m-ID, b-ID, borrow-date, return-date, status, fine)
 توجه: در جدولِ امانت، از آنجایی که یک عضو، یک کتاب بخصوص را چندین بار می تواند امانت بگیرد، ضروری است که تاریخِ امانت را نیز به همراه آیدی کتاب و آیدی عضو، به عنوان کلید اولیه در نظر بگیریم.
 
-کدهای SQL ساخت جداول به همراه جدول  ساخته شده:
---------------
+کدهای SQL ساخت جداول به همراه جدول ساخته شده:
+book relation:
+https://imgur.com/AKYzQUJ
+https://imgur.com/undefined
 در ساخت این جدول برای اینکه آیدی هر کتاب به طور خاصی انتخاب شود، به وسیله دستور 
 GENERATED ALWAYS AS (Expression) STORED
 و به نیز با دستور concat()، مشخص کردیم که هنگام ساختِ هر تاپل، باید 5 حرف ابتدای نام نویسنده، 4 رقم سال چاپ و 3 رقم شماره قفسه¬ای که کتاب در آن ذخیره شده با هم ادغام و به وسیله یک "-" از هم جدا شده و در فیلد b-ID آن کتاب ذخیره شود. تمام فیلدها به جزISBN  و شماره قفسه که عددی هستند، در فرمت کارکتری ذخیره می¬شود.
----------------
+member relation:
+https://imgur.com/undefined
+https://imgur.com/ECGSwIj
 برای جدول member نیز به طور مشابه عمل می¬شود. نکته قابل ذکر در اینجا این است که تاریخ¬ها از نوع داده date می¬باشند؛ به این صورت که سال، ماه، و روز در کنار هم با یک جداکننده "-" ذخیره می شود و بعدا با این نوعِ داده می¬توان کارهای مختلفی از جمله محاسبه مدت زمان بین دو تاریخ و... انجام داد.
---------------
+borrows relation:
+https://imgur.com/H0uN0KN
+https://imgur.com/CSxXe0P
 در ساختِ جدول borrows، می¬بایستی به این علت که دو attribute مهم آن که به آیدی یک کتاب و آیدی عضو اشاره دارد، در قسمت قواعد به عنوان foreign key، تعریف شود تا هنگام اضافه کردن دیتاها، مطمئن شویم آیدی¬های مربوطه حتما وجود دارند و قبلا تعریف شده¬اند.
 همچنین در تعریف فیلد جریمه یا fine، از مقدار دیفالتِ صفر، استفاده کرده¬ایم تا به طور پیشفرض هر امانت را بدون جریمه در حالت اولیه در نظر بگیرد.
------------------------
+librarian relation:
+https://imgur.com/xQx2c6G
+https://imgur.com/undefined
 در تعریف جدول librarian، بعد از تعریف attributeها، در قسمت قواعد به وسیله دستور check، تعیین کردیم که هر مقدار حقوقی که برای هر کتابدار ثبت می¬شود نباید کمتر از 50000 (دلار) باشد. در غیر این صورت آن مقدار ثبت نخواهد شد.
----------------------
+area relation:
+https://imgur.com/EOjcKnK
+https://imgur.com/EOjcKnK
 در کد ساخت area، از آنجایی که باید محدوده کار هر کتابدار نیز مشخص شود، باید یک قاعده ارجاعی به جدول کتابداران ایجاد شود که فیلد librarian را به l-ID در جدول librarian مرتبط کند تا مشخص شود هر آیدی حتما نشان دهنده یک کتابدار واقعی در کتابخانه است.
+
 توجه: ما برای رابطه stored in که بین جدول کتاب¬ها و ناحیه مربوط به آن کتاب بو،د هیچ فیلد جدیدی در هیچ کدام از جداول ایجاد نکردیم تا این رابطه را مشخص کند. این به این دلیل است که به وسیله شماره قفسه هر کتاب و رنج قفسات مربوط به هر ناحیه، می¬توان مشخص کرد که هر کتاب متعلق به کتاب بخش است و به اینگونه از تکرار اطلاعات اضافی و جاگیری ظرفیت حافظه جلوگیری می¬کنیم.
 
 دادن دیتا به جداول:
@@ -39,24 +49,24 @@ GENERATED ALWAYS AS (Expression) STORED
 در ابتدا دستور
 SELECT * FROM <table-name>;
  اجرا می¬کنیم تا اطلاعات ذخیره شده در هر جدول را مشاهده کنیم:
-Inserted data in `book` relation:
+Inserted data in `book` relation: https://imgur.com/oPGmNMh
 
-Inserted data in `member` relation:
+Inserted data in `member` relation: https://imgur.com/WXo0V97
 
-Inserted data in `librarian` relation:
+Inserted data in `librarian` relation: https://imgur.com/GtsVFTT
 
-Inserted data in `area` relation:
+Inserted data in `area` relation: https://imgur.com/PgbxyDP
 
-Inserted data in `borrows` relation:
-
+Inserted data in `borrows` relation: https://imgur.com/UiFSohb
 
 انجام چند query ساده:
 پرسمان 1) نام و نام خانوادگی اعضایی که هیچ کتابی را به امانت نگرفته¬اند:
-
+https://imgur.com/GtsVFTT
 پرسمان 2)   نام کتاب¬هایی که هنوز برگردانده نشده به همراه نویسنده آن:
-
+https://imgur.com/PgbxyDP
 پرسمان 3) کتاب¬هایی که در بخش novel هستند:
-
+https://imgur.com/UiFSohb
 پرسمان 4)کتابدارهایی که در بیشتر از دو بخش کار می¬کنند:
-
+https://imgur.com/undefined
 پرسمان5)کتاب هایی که بیشتر از دوبار امانت گرفته شده اند:
+https://imgur.com/3ApxJF3
